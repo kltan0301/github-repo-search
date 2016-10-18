@@ -6,6 +6,8 @@ $(document).ready(function(){
     var $searchField = $('.searchField');
     var $repoDetails = $('.repoDetails');
 
+    var githubURL = "https://api.github.com/";
+
     function init(){
       $searchBtn.on('click', runSearch)
     }
@@ -18,35 +20,55 @@ $(document).ready(function(){
 
         $.ajax({
           type: "GET",
-          url: "https://api.github.com/search/repositories",
+          url: githubURL + "search/repositories",
           data: { q: repoName }
          }).done(function(data){
            data.items.forEach(function(repo){
              var repoObj = {};
+             repoObj.user = repo.owner.login;
              repoObj.name = repo.full_name;
-             repoObj.language =  repo.language;
+             repoObj.language =  repo.language || "none";
              repoObj.url = repo.html_url;
+             repoObj.description = repo.description || "none";
 
              //create new user block
-             var newUserBlock = $('<div>', { class: "user-block" });
-             newUserBlock.text(repo.full_name);
+             var newUserBlock = $('<div>', { class: "user-block" }).text(repo.full_name);
              newUserBlock.on('click', { repoDetails : repoObj }, retrieveGitDetails)
              $repoContainer.append(newUserBlock);
            })
          })
 
-
       } else {
-        $repoDetails.text("No repository selected");
+        $repoDetails.text("Please enter a repository in the search box");
       }
     }
 
     function retrieveGitDetails(event){
+      //add all repo details
       var repoDetails = event.data.repoDetails;
+      var header = $('<h1>').text("Repository Name: " + repoDetails.name);
+      var language = $('<p>').text("Language: " + repoDetails.language);
+      var description = $('<p>').text("Description: " + repoDetails.description);
+      var url = $('<a>', { href: repoDetails.url }).text(repoDetails.url)
+      var user = repoDetails.user;
+      //get followers
+      $.ajax({
+        type: "GET",
+        url: githubURL + 'users/' + user + '/followers'
+      }).done(function(data){
+        var followerStr = "";
 
-      var header = $('<h1>').text(repoDetails.name);
-      $repoDetails.html(header)
-      console.log(event.data.repoDetails);
+        if(data.length > 0){
+          data.forEach(function(follower){
+            followerStr += follower.login + " | "
+          })
+        }else{
+          followerStr = "none";
+        }        
+        var followerStr = $('<p>').text("Followers: " + followerStr)
+        var userDiv = $('<div>').append(header, language, description, url, followerStr);
+        $repoDetails.html(userDiv);
+      })
     }
     return {
       init: init
