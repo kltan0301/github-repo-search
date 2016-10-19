@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
   <link rel="stylesheet" href="style.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
@@ -24,18 +27,26 @@
 
 <body>
   <div class="container">
-      <h2>Github Repo Search</h2>
+      <h1>Github Repo Search</h1>
       <div class="input-group">
         <input type="search" class="form-control searchField" placeholder="Enter Github repository name"/>
-        <span class="input-group-addon addon-custom glyphicon glyphicon-search">
-      </span>
+        <span class="input-group-addon addon-custom">
+          <span class="glyphicon glyphicon-search"></span>
+        </span>
       </div>
   </div>
-  <div class="col-xs-3 repoResults">
+  <div class="matched-results">
+    <!-- <h1>Enter a github repo name </h1> -->
+    <ul>
+      <h1 class="center-align">Welcome to github Repo Searcher</h1>
+      <p class="center-align">Enter a repo name in the search box to get started!</p>
+    </ul>
+  </div>
+  <!-- <div class="col-xs-3 repoResults">
   </div>
   <div class="repoDetails col-xs-6">
     <h1>Enter a github repo name to search</h1>
-  </div>
+  </div> -->
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 $(document).ready(function(){
   var gitRepoSearch = (function(){
     //retrieve elements
-    var $repoContainer = $('.repoResults');
+    var $matchedResults = $('.matched-results').find('ul');
     var $searchBtn = $('.addon-custom');
     var $searchField = $('.searchField');
     var $repoDetails = $('.repoDetails');
@@ -9,11 +9,13 @@ $(document).ready(function(){
     var githubURL = "https://api.github.com/";
 
     function init(){
-      $searchBtn.on('click', runSearch)
+      $searchBtn.on('click', runSearch);
     }
 
     function runSearch(){
       var repoName = $searchField.val();
+      //clear matched results container
+      $matchedResults.html("");
 
       //check if user keyed values into input box
       if(repoName && !repoName.match(/^\s.*/)){
@@ -32,26 +34,40 @@ $(document).ready(function(){
              repoObj.description = repo.description || "none";
 
              //create new user block
-             var newUserBlock = $('<div>', { class: "user-block" }).text(repo.full_name);
-             newUserBlock.on('click', { repoDetails : repoObj }, retrieveGitDetails)
-             $repoContainer.append(newUserBlock);
+             var userListItem = $('<li>');
+             var newUserBlock = $('<div>', { class: "user-block" });
+             var userRepoName = $('<div>', {class:"repo-description"}).html('<h2>' +repo.full_name + '</h2>')
+             var userRepoDetails = $('<div>', {class:"repo-details hide"}).html('<p>'+ repo.language + '</p>');
+             var arrow = $('<span>', {class: "glyphicon glyphicon-chevron-down right-arrow"})
+
+             arrow.on('click',{ repoDetails : repoObj }, retrieveGitDetails);
+
+             //append children to parent container
+             userRepoName.append(userRepoDetails);
+             newUserBlock.append(userRepoName).append(arrow);
+             userListItem.append(newUserBlock);
+            //  newUserBlock.on('click', { repoDetails : repoObj }, retrieveGitDetails)
+             $matchedResults.append(userListItem);
            })
          })
 
       } else {
-        $repoDetails.text("Please enter a repository in the search box");
+        $matchedResults.text("Please enter a repository in the search box");
       }
     }
 
     function retrieveGitDetails(event){
+      var repoDetailContainer = $(this).siblings().find('.repo-details');
+      //clear the repo details
+      repoDetailContainer.html("").toggleClass('hide')
       //add all repo details
       var repoDetails = event.data.repoDetails;
-      var header = $('<h1>').text("Repository Name: " + repoDetails.name);
+    //   var header = $('<h1>').text("Repository Name: " + repoDetails.name);
       var language = $('<p>').text("Language: " + repoDetails.language);
       var description = $('<p>').text("Description: " + repoDetails.description);
-      var url = $('<a>', { href: repoDetails.url }).text(repoDetails.url)
+      var url = $('<a>', { href: repoDetails.url }).text("Url: " + repoDetails.url)
       var user = repoDetails.user;
-      //get followers
+    //   //get followers
       $.ajax({
         type: "GET",
         url: githubURL + 'users/' + user + '/followers'
@@ -64,10 +80,9 @@ $(document).ready(function(){
           })
         }else{
           followerStr = "none";
-        }        
+        }
         var followerStr = $('<p>').text("Followers: " + followerStr)
-        var userDiv = $('<div>').append(header, language, description, url, followerStr);
-        $repoDetails.html(userDiv);
+        repoDetailContainer.append(language, description, url, followerStr);
       })
     }
     return {
