@@ -60,3 +60,15 @@ li {
 .hide {
   display: none;
 }
+.paginationjs-pages {
+  text-align: center;
+}
+.paginationjs-prev, .paginationjs-page, .paginationjs-next {
+  display: inline-block;
+  margin: 20px;
+  font-size: 1.5em;
+}
+.active {
+  font-size: 2em;
+  text-decoration: underline;
+}
