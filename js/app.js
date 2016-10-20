@@ -10,14 +10,13 @@ $(document).ready(function() {
           var githubURL = "https://api.github.com/";
 
           function init() {
-            // $searchBtn.on('click', runSearch);
             $searchBtn.on('click', runSearch);
           }
-
+          //generate html based on user data
           function template(data) {
             var ulBlock = $('<ul>');
-            $.each(data, function(index, item) {
 
+            $.each(data, function(index, item) {
               var repoObj = {};
               repoObj.user = item.owner.login;
               repoObj.name = item.full_name;
@@ -38,7 +37,7 @@ $(document).ready(function() {
               var arrow = $('<span>', {
                 class: "glyphicon glyphicon-chevron-down right-arrow"
               })
-
+              //event lister populates repo data and retrieves followers
               arrow.on('click', {
                 repoDetails: repoObj
               }, retrieveGitDetails);
@@ -46,9 +45,8 @@ $(document).ready(function() {
               userRepoName.append(userRepoDetails);
               newUserBlock.append(userRepoName).append(arrow);
               userListItem.append(newUserBlock);
-              ulBlock.append(userListItem)
+              ulBlock.append(userListItem);
             });
-
             return ulBlock;
           }
 
@@ -71,7 +69,6 @@ $(document).ready(function() {
                     pageSize: 10,
                     locator: 'items',
                     callback: function(data, pagination) {
-                      // template method of yourself
                       var html = template(data);
                       $matchedResults.html(html);
                     }
@@ -79,21 +76,20 @@ $(document).ready(function() {
                 })
               }
             }
-            
+            //Add data to repo details and retrieve followers
             function retrieveGitDetails(event) {
               var repoDetailContainer = $(this).siblings().find('.repo-details');
               //clear the repo details
               repoDetailContainer.html("").toggleClass('hide')
                 //add all repo details
               var repoDetails = event.data.repoDetails;
-              //   var header = $('<h1>').text("Repository Name: " + repoDetails.name);
               var language = $('<p>').text("Language: " + repoDetails.language);
               var description = $('<p>').text("Description: " + repoDetails.description);
               var url = $('<a>', {
                 href: repoDetails.url
               }).text("Url: " + repoDetails.url)
               var user = repoDetails.user;
-              //   //get followers
+              //get followers
               $.ajax({
                 type: "GET",
                 url: githubURL + 'users/' + user + '/followers'
