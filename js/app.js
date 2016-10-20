@@ -1,7 +1,7 @@
 $(document).ready(function() {
       var gitRepoSearch = (function() {
           //retrieve elements
-          var $matchedResults = $('.matched-results').find('ul');
+          var $matchedResults = $('.matched-results');
           var $searchBtn = $('.addon-custom');
           var $searchField = $('.searchField');
           var $repoDetails = $('.repoDetails');
