@@ -57,6 +57,26 @@ li {
   width: 90%;
   padding: 5px;
 }
+.repo-description h2 {
+  font-size: 2.5em;
+  color: #70cf32;
+}
+.repo-details a{
+  /*border: 2px solid black;*/
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #70cf32;
+  color: white;
+  float: right;
+}
+.repo-details a:hover {
+  background-color: #5AA731;
+  text-decoration: none;
+}
+span.bold {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+}
 .hide {
   display: none;
 }

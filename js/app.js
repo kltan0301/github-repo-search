@@ -83,11 +83,13 @@ $(document).ready(function() {
               repoDetailContainer.html("").toggleClass('hide')
                 //add all repo details
               var repoDetails = event.data.repoDetails;
-              var language = $('<p>').text("Language: " + repoDetails.language);
-              var description = $('<p>').text("Description: " + repoDetails.description);
+              // var language = $('<p>').text("Language: " + repoDetails.language);
+              var language = $('<p>').html("<span class='bold'>Language: </span>" + repoDetails.language);
+              var description = $('<p>').html("<span class='bold'>Description:</span> " + repoDetails.description);
               var url = $('<a>', {
-                href: repoDetails.url
-              }).text("Url: " + repoDetails.url)
+                href: repoDetails.url,
+                class: ''
+              }).html('Check out this repo')
               var user = repoDetails.user;
               //get followers
               $.ajax({
@@ -103,8 +105,8 @@ $(document).ready(function() {
                 } else {
                   followerStr = "none";
                 }
-                var followerStr = $('<p>').text("Followers: " + followerStr)
-                repoDetailContainer.append(language, description, url, followerStr);
+                var followerStr = $('<p>').html("<span class='bold'>Followers: </span>" + followerStr)
+                repoDetailContainer.append(language, description, followerStr, url);
               })
             }
             return {
