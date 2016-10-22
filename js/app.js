@@ -88,7 +88,7 @@ $(document).ready(function() {
               var description = $('<p>').html("<span class='bold'>Description:</span> " + repoDetails.description);
               var url = $('<a>', {
                 href: repoDetails.url,
-                class: ''
+                target: '_blank'
               }).html('Check out this repo')
               var user = repoDetails.user;
               //get followers
