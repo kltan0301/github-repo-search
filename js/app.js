@@ -52,11 +52,11 @@ $(document).ready(function() {
 
           function runSearch() {
             var repoName = $searchField.val();
-            //clear matched results container
-            $matchedResults.html("<h1 class='center-align'>Loading from Github...</h1>");
 
             //check if user keyed values into input box
             if (repoName && !repoName.match(/^\s.*/)) {
+              //clear matched results container
+              $matchedResults.html("<h1 class='center-align'>Loading from Github...</h1>");
               $.ajax({
                 type: "GET",
                 url: githubURL + "search/repositories",
@@ -74,6 +74,10 @@ $(document).ready(function() {
                     }
                   })
                 })
+              }else{
+                // console.log($paginationScroll);
+                $paginationScroll.empty();
+                $matchedResults.html("<h1 class='center-align'>Please enter a repo name in the search bar</h1>");
               }
             }
             //Add data to repo details and retrieve followers
